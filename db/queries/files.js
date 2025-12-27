@@ -4,10 +4,14 @@
 import db from "#db/client";
 
 //honnah! bellow- this getFiles also needs to include the folder name
-export async function getFiles(){
+export async function getFilesIncludingFolderName(){
   const sql = `
-  SELECT *
-  FROM files
+  SELECT 
+  files.*,
+  folders.name AS folder_name
+  FROM 
+  files 
+  JOIN folders ON folders.id = files.folder_id
   `
   const { rows: files } = await db.query(sql);
   return files;

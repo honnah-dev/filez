@@ -12,6 +12,24 @@ export async function getFolders() {
   return folders;
 }
 
+export async function getFoldersIncludingIdIncludingFiles(id) {
+  const sql = `
+  SELECT 
+  folders.*,
+    (SELECT json_agg(files)
+    FROM files
+    WHERE files.folder_id = folders.id
+    
+    ) AS files
+  
+    FROM folders
+    WHERE id = $1
+  
+  `
+  const { rows: [folder], } = await db.query(sql, [id]);
+  return folder
+}
+
 export async function createFolder(name) {
   const sql = `
   INSERT INTO folders

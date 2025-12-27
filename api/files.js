@@ -6,18 +6,12 @@ import express from "express";
 const router = express.Router();
 export default router;
 
-import { getFiles } from "#db/queries/files";
-import { getFolders } from "#db/queries/folders";
+import { getFilesIncludingFolderName } from "#db/queries/files";
 
-router.get("/files", async (req, res) => {
-const files = await getFiles();
+
+router.get("/", async (req, res) => {
+const files = await getFilesIncludingFolderName();
 res.send(files);
 
 });
 
-router.get("/folders", async (req, res) => {
-  const folders = await getFolders();
-  res.send(folders);
-
-
-});
